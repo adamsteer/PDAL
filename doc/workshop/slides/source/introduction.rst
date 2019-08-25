@@ -29,12 +29,11 @@ Who are we
 
 Adam Steer
 ================================================================================
+* Geospatial research consultant focussing on open, reproducible tools and workflows
 * Uses and contributes to  open source GIS and LiDAR software
 * Tweets @ http://twitter.com/adamsteer
-* http://spatialised.net
-* https://www.researchgate.net/profile/Adam_Steer
-* http://au.linkedin.com/in/adamsteer
-* http://orcid.org/0000-0003-0046-7236 
+* Website: http://spatialised.net
+* Occasionally writes science: https://www.researchgate.net/profile/Adam_Steer
 
 Michael Smith
 ================================================================================
