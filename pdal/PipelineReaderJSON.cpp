@@ -115,6 +115,7 @@ void PipelineReaderJSON::parsePipeline(NL::json& tree)
             for (Stage *ts : inputs)
                 s->setInput(*ts);
             inputs.clear();
+            inputs.push_back(s);
         }
         else
         {
@@ -141,13 +142,17 @@ void PipelineReaderJSON::readPipeline(std::istream& input)
 
     try
     {
-        input >> root;
+        root = NL::json::parse(input);
     }
     catch (NL::json::parse_error& err)
     {
-        throw pdal_error(
-            std::string("JSON pipeline: Unable to parse pipeline:\n") +
-            err.what());
+        // Look for a right bracket -- this indicates the start of the
+        // actual message from the parse error.
+        std::string s(err.what());
+        auto pos = s.find("]");
+        if (pos != std::string::npos)
+            s = s.substr(pos + 1);
+        throw pdal_error("Pipeline:" + s);
     }
 
     auto it = root.find("pipeline");
@@ -156,7 +161,7 @@ void PipelineReaderJSON::readPipeline(std::istream& input)
     else if (root.is_array())
         parsePipeline(root);
     else
-        throw pdal_error("JSON pipeline: Root element is not a pipeline.");
+        throw pdal_error("Pipeline: root element is not a pipeline.");
 }
 
 
@@ -165,7 +170,7 @@ void PipelineReaderJSON::readPipeline(const std::string& filename)
     std::istream* input = Utils::openFile(filename);
     if (!input)
     {
-        throw pdal_error("JSON pipeline: Unable to open stream for "
+        throw pdal_error("Pipeline: Unable to open stream for "
             "file \"" + filename + "\"");
     }
 
@@ -344,18 +349,18 @@ Options PipelineReaderJSON::extractOptions(NL::json& node)
             continue;
         }
 
-        if (extractOption(options, name, subnode))
-            continue;
-        else if (subnode.is_array())
+        if (subnode.is_array())
         {
             for (const NL::json& val : subnode)
-                if (!extractOption(options, name, val))
+                if (val.is_object())
+                    options.add(name, val);
+                else if (!extractOption(options, name, val))
                     throw pdal_error("JSON pipeline: Invalid value type for "
                         "option list '" + name + "'.");
         }
         else if (subnode.is_object())
             options.add(name, subnode);
-        else
+        else if (!extractOption(options, name, subnode))
             throw pdal_error("JSON pipeline: Value of stage option '" +
                 name + "' cannot be converted.");
     }

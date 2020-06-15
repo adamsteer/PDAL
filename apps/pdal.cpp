@@ -164,13 +164,15 @@ void App::outputDrivers()
         StageExtensions& extensions = PluginManager<Stage>::extensions();
         for (auto name : stages)
         {
+            Stage *s = f.createStage(name);
             std::string description = PluginManager<Stage>::description(name);
             std::string link = PluginManager<Stage>::link(name);
             j.push_back(
                 { { "name", name },
                   { "description", description },
                   { "link", link },
-                  { "extensions", extensions.extensions(name) }
+                  { "extensions", extensions.extensions(name) },
+                  { "streamable", s->pipelineStreamable() }
                 }
             );
         }
@@ -295,7 +297,7 @@ void App::addArgs(ProgramArgs& args)
 
 namespace
 {
-    LogPtr logPtr(new Log("PDAL", "stderr"));
+    LogPtr logPtr(Log::makeLog("PDAL", "stderr"));
 }
 
 int main(int argc, char* argv[])
@@ -324,7 +326,7 @@ int App::execute(StringList& cmdArgs, LogPtr& log)
         return -1;
     }
 
-    log.reset(new Log("PDAL", m_log, m_logtiming));
+    log = Log::makeLog("PDAL", m_log, m_logtiming);
     if (m_logLevel != LogLevel::None)
         log->setLevel(m_logLevel);
     else if (m_debug)

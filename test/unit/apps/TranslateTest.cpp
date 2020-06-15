@@ -92,7 +92,7 @@ TEST(TranslateTest, t2)
     EXPECT_EQ(runTranslate(in + " " + out + " --json=\"" + json + "\"",
         output), 0);
 
-    // Check that we fail with no bad input file.
+    // Check that we fail with no input file.
     FileUtils::deleteFile("foo.las");
     EXPECT_NE(runTranslate("foo.las " + out + " --json=\"" + json + "\"",
         output), 0);
@@ -168,7 +168,7 @@ TEST(TranslateTest, t2)
           \\\"badoutput2.las\\\" \
         ] \
         }";
-    EXPECT_NE(runTranslate(in + " " + out + " --json=\"" + json + "\"",
+    EXPECT_EQ(runTranslate(in + " " + out + " --json=\"" + json + "\"",
         output), 0);
 
     // Check that we can handle chained writers.
@@ -235,3 +235,12 @@ TEST(TranslateTest, issue_2114)
     EXPECT_FALSE(FileUtils::fileExists(Support::temppath("out4.las")));
 }
 
+TEST(TranslateTest, issue2835)
+{
+    FileUtils::deleteFile("devnull");
+
+    std::string output;
+    std::string in = Support::datapath("las/autzen_trim.las");
+    EXPECT_EQ(runTranslate(in + " " + "devnull", output), 0);
+    EXPECT_FALSE(FileUtils::fileExists("devnull"));
+}

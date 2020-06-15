@@ -23,10 +23,12 @@ like :ref:`readers.oci`, or a network service like :ref:`readers.ept`.
    readers.faux
    readers.gdal
    readers.geowave
+   readers.hdf
    readers.i3s
    readers.ilvis2
    readers.las
    readers.matlab
+   readers.memoryview
    readers.mbio
    readers.mrsid
    readers.nitf
@@ -90,6 +92,10 @@ like :ref:`readers.oci`, or a network service like :ref:`readers.ept`.
 
 :ref:`readers.mbio`
     Read sonar bathymetry data from formats supported by the MB-System library.
+
+:ref:`readers.memoryview`
+    Read data from memory where dimension data is arranged in rows.  For
+    use only with the PDAL API.
 
 :ref:`readers.mrsid`
     Read data compressed by the MrSID 4.0 LiDAR Compressor. Requires the

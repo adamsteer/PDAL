@@ -77,6 +77,30 @@ namespace Utils
     const char pathListSeparator = ':';
 #endif
 
+    class StatusWithReason
+    {
+    public:
+        StatusWithReason() : m_code(0)
+        {}
+        StatusWithReason(int code, const std::string& what) :
+            m_code(code), m_what(what)
+        {}
+
+        int code() const
+        { return m_code; }
+
+        operator bool () const
+        { return (m_code == 0); }
+
+        std::string what() const
+        { return m_what; }
+
+    private:
+        int m_code;
+        std::string m_what;
+    };
+
+
     /**
      * \brief Clamp value to given bounds.
      *
@@ -108,27 +132,6 @@ namespace Utils
       \param maximum  Upper value of range for random number generation.
     */
     PDAL_DLL double random(double minimum, double maximum);
-
-    /**
-      Generate values in a uniform distribution in the range [minimum, maximum]
-      using the provided seed value.
-
-      \param double  Lower value of range for random number generation.
-      \param double  Upper value of range for random number generation.
-      \param seed    Seed value for random number generation.
-    */
-    PDAL_DLL double uniform(const double& minimum, const double& maximum,
-        uint32_t seed);
-    /**
-      Generate values in a normal distribution in the range [minimum, maximum]
-      using the provided seed value.
-
-      \param double  Lower value of range for random number generation.
-      \param double  Upper value of range for random number generation.
-      \param seed    Seed value for random number generation.
-    */
-    PDAL_DLL double normal(const double& mean, const double& sigma,
-        uint32_t seed);
 
     /**
       Determine if two values are within a particular range of each other.

@@ -132,13 +132,7 @@ PCL
 `PCL`_ is a complementary, rather than substitute, open source software
 processing suite for point cloud data. The developer community of the PCL
 library is focused on algorithm development, robotic and computer vision, and
-real-time laser scanner processing. PDAL links and uses PCL, and PDAL provides
-a convenient pipeline mechanism to orchestrate PCL operations.
-
-.. note::
-
-    See :ref:`pcl_block_tutorial` for more detail on how to take advantage of
-    PCL capabilities within PDAL operations.
+real-time laser scanner processing. PDAL can read and write PCL's PCD format.
 
 Greyhound and Entwine
 ................................................................................
@@ -360,6 +354,25 @@ comfortable and familiar language environment for geospatial practitioners.
     install and use the PDAL Python extension.
 
 .. _`Numpy`: http://www.numpy.org/
+
+Julia Plugin
+................................................................................
+
+.. index:: Julia
+
+PDAL supports embedding |Julia| filters. These allow you to dynamically interact
+with point cloud data in a more comfortable and familiar language environment
+for geospatial practitioners, while still maintaining high performance.
+
+Additionally the TypedTables.jl, RoamesGeometry.jl and AcceleratedArrays.jl libraries
+provide some very high-level interfaces for writing efficient filters.
+
+.. seealso::
+
+    The github repo at https://github.com/cognitive-earth/PDAL-julia contains
+    a docker image, build instructions and some sample filters.
+
+    Documentation for the stage :ref:`filters.julia`
 
 
 Conclusion
